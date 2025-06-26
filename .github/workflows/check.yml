@@ -1,0 +1,27 @@
+name: check
+
+on: [push, pull_request, merge_group, workflow_dispatch]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    name: Check
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Check version
+      id: version-check
+      run: |
+        chmod +x ./scripts/is-newer-version.bash
+        chmod +x ./scripts/get-version.bash
+        VERSION=$(./scripts/is-newer-version.bash)
+        echo "version=${VERSION}" >> $GITHUB_OUTPUT
+        if [ "$VERSION" != "0" ]; then
+          echo "New version detected: $VERSION"
+        else
+          echo "No new version to release"
+        fi
