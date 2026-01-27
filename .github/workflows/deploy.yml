@@ -1,0 +1,30 @@
+name: deploy
+
+on: [workflow_dispatch, workflow_call]
+
+jobs:
+  check:
+    uses: ./.github/workflows/check.yml
+  deploy:
+    runs-on: ubuntu-latest
+    name: Check
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Drop markdown.html
+        uses: PJ-568/MARKDOWN.HTML@v1.18.8
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./"
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
