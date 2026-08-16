@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# commit-msg 钩子：检查提交信息是否符合 README 附录「正式语法」
+# 启用：git config core.hooksPath .githooks
+# 可绕过：git commit --no-verify（远程 CI 门禁不可绕过）
+
+# 当前钩子所在目录 | Current Hook Directory
+HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# 将退出码透传给 git | Pass through the exit code to git
+exec node "$HOOK_DIR/../scripts/check-grammar.mjs" --file "$1"

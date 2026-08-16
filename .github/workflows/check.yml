@@ -15,6 +15,9 @@ jobs:
       - name: AutoCorrect
         uses: huacnlee/autocorrect-action@v2
 
+      - name: Check commit grammar
+        run: node scripts/check-grammar.mjs
+
       - name: Report ReviewDog
         if: failure()
         uses: huacnlee/autocorrect-action@v2
